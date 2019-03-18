@@ -27,7 +27,8 @@ app.use(
 // Set up CORS
 app.use(
   cors({
-    origin: CLIENT_ORIGIN
+    // quick and dirty need to fix
+    origin: '*'
   })
 );
 
