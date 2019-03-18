@@ -7,6 +7,7 @@ const { DATABASE_URL } = require('./config');
 
 function dbConnect(url = DATABASE_URL) {
   return mongoose.connect(url)
+    .then(res => console.info('connected to remote database'))
     .catch(err => {
       console.error('Mongoose failed to connect');
       console.error(err);
