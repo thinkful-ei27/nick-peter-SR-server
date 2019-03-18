@@ -43,7 +43,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: tr
 
 // Mount routers
 app.use('/api/users', usersRouter);
-app.use('api', authRouter);
+app.use('/api', authRouter);
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
