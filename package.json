@@ -4,7 +4,6 @@
   "description": "Template for an Express backend",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && node index.js",
     "start": "nodemon index.js",
     "mocha": "mocha --exit --file test/setup.test.js '!(node_modules)/**/*test.js'",
     "mocha-exit0": "mocha --exit --file test/setup.test.js '!(node_modules)/**/*test.js' || true",
