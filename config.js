@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config();
 
 module.exports = {
   PORT: process.env.PORT || 8080,
@@ -7,7 +8,8 @@ module.exports = {
         process.env.DATABASE_URL || 'mongodb://webuser:webuser1@ds163255.mlab.com:63255/portuguese-palavras',
   TEST_DATABASE_URL:
         process.env.TEST_DATABASE_URL ||
-        'mongodb://localhost/thinkful-backend-test'
+        'mongodb://localhost/thinkful-backend-test',
+  JWT_SECRET: process.env.JWT_SECRET
   // DATABASE_URL:
   //     process.env.DATABASE_URL || 'postgres://localhost/thinkful-backend',
   // TEST_DATABASE_URL:
