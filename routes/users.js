@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
   }
 
   // If username and pswd aren't trimmed we give an error. We need to let the user
-  // know that if the want a password "foobar  " for example(w/ spaces on end), that 
+  // know that if they want a password "foobar  " for example(w/ spaces on end), that 
   // having spaces are not allowed rather than silently trimming them and not telling user
   const explicitlyTrimmedFields = ['username', 'password'];
   const nonTrimmedField = explicitlyTrimmedFields.find(
@@ -41,6 +41,4 @@ router.post('/', (req, res, next) => {
     err.status = 422;
     return next(err);
   }
-  
-
 });
