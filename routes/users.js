@@ -79,6 +79,14 @@ router.post('/', (req, res, next) => {
     });
   }
 
+
+  //temporary, replace with call to MongoDB (list of words)
+  const wordSet = [{Portuguese: 'Ola', English: 'Hello', M: 0},
+ {Portuguese: 'Amor', English: 'Love', M: 0},
+  {Portuguese: 'Felicidade', English: 'Happiness', M: 0}, 
+  {Portuguese: 'Gato', English: 'Cat', M:0}, 
+  {Portuguese: 'Sorrir', English: 'Smile', M: 0}];
+
   let { username, password } = req.body;
   return User.find({ username })
     .count()
@@ -97,7 +105,8 @@ router.post('/', (req, res, next) => {
     .then(digest => {
       const newUser = {
         username,
-        password: digest
+        password: digest,
+        wordSet
       };
       return User.create(newUser);
     })

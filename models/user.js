@@ -5,7 +5,8 @@ const bcrypt = require('bcryptjs');
 
 const schema = new mongoose.Schema({
   username: { type: String, required: true, unique: true},
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  wordSet: { type: Array, required: true }
 });
 
 // Transform output during `res.json(data)`, `console.log(data)` etc...
@@ -15,6 +16,8 @@ schema.set('toJSON', {
     delete result._id;
     delete result.__v;
     delete result.password;
+    //should probably delete wordSet
+    delete result.wordSet;
   }
 });
 
