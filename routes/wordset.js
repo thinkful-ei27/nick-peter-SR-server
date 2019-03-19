@@ -39,23 +39,23 @@ router.post('/', jwtAuth, (req, res, next) => {
         let wordSet = result[0].wordSet;
         return wordSet;
       }).then(wordSet => {
+        let newValue = wordSet[0].M;
         if(answer === wordSet[0].English){
-          let newValue = wordSet[0].M + 1;
-          console.log(newValue);
-          res.json('Correct!');
+          newValue = newValue + 1;
+          return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
+          .then(() => res.json('Correct!'));
         } else {
-          let newValue = wordSet[0].M - 1;
+          newValue = newValue - 1;
           if(newValue < 0){
             newValue = 0;
           }
-          console.log(newValue);
-          let response = `Incorrect. The correct answer is ${wordSet[0].English}`
-          res.json(response);
+          let response = `Incorrect. The correct answer is ${wordSet[0].English}`;
+          return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
+          .then(() => res.json(response));
         }
       }).catch(err => {
         next(err);
       })
-    //Will return a success, but the message will be one of two: "Yes", or "No"/"Real Value"
 })
 
 module.exports = router;
