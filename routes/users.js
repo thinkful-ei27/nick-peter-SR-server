@@ -80,8 +80,19 @@ router.post('/', (req, res, next) => {
   }
 
   let { username, password } = req.body;
-  
-  return User.hashPassword(password)
+  return User.findOne({ username })
+    .count()
+    .then(count => {
+      if (count > 0) {
+        return Promise.reject({
+          code: 400,
+          reason: 'ValidationError',
+          message: 'The username already exist',
+          location: 'username'
+        });
+      }
+      return User.hashPassword(password);
+    })
     .then(digest => {
       const newUser = {
         username,
