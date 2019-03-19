@@ -34,12 +34,21 @@ router.post('/', jwtAuth, (req, res, next) => {
       }
     return User.find({ _id: userId })
       .then(result => {
+        console.log('find by id result:');
+        console.log(result);
         let wordSet = result[0].wordSet;
         return wordSet;
       }).then(wordSet => {
         if(answer === wordSet[0].English){
+          let newValue = wordSet[0].M + 1;
+          console.log(newValue);
           res.json('Correct!');
         } else {
+          let newValue = wordSet[0].M - 1;
+          if(newValue < 0){
+            newValue = 0;
+          }
+          console.log(newValue);
           let response = `Incorrect. The correct answer is ${wordSet[0].English}`
           res.json(response);
         }
