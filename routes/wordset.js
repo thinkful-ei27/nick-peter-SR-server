@@ -72,12 +72,12 @@ router.post('/', jwtAuth, (req, res, next) => {
         console.log(words);
         //HOT SPICY MANGO POLICY
         const update = {};
-        update["wordSet"] = words;
-        update["head"] = newHead;
+        update['wordSet'] = words;
+        update['head'] = newHead;
         return User.findOneAndUpdate({ _id: userId}, update)
-        .then(() => {
-          res.json('Correct!')
-        })
+          .then(() => {
+            res.json('Correct!');
+          });
       } else {
         words[oldHead].memoryStrength = 1;
         const newHead = headNode.next;
@@ -87,14 +87,14 @@ router.post('/', jwtAuth, (req, res, next) => {
         console.log(words[oldHead]);
         //HOT SPICY MANGO POLICY
         const update = {};
-        update["wordSet"] = words;
-        update["head"] = newHead;
+        update['wordSet'] = words;
+        update['head'] = newHead;
         return User.findOneAndUpdate({ _id: userId}, update)
-        .then(() => {
-          res.json(`Incorrect. The correct answer is ${trueAnswer}`)
-        })
+          .then(() => {
+            res.json(`Incorrect. The correct answer is ${trueAnswer}`);
+          });
       }
-  })  
+    })  
     .catch(err => {
       next(err);
     });
