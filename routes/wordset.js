@@ -44,10 +44,16 @@ router.post('/', jwtAuth, (req, res, next) => {
         let oldValue = word.memoryStrength;
         //number that will be turned into the new head indicator
         let next = result[0].wordSet[head].next;
+        //this will be the updated memoryStrength
+        let newValue;
         if(answer === word.english){
-          let newValue = oldValue * 2;
+          newValue = oldValue * 2;
           return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
           .then(() => res.json('Correct!'));
+        } else {
+          newValue = 1;
+          return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
+          .then(() => res.json(`Incorrect. The correct answer is ${word.english}`));
         }
         //compare answer to head's answer/english value
           //(True) new memoryStrength = oldValue * 2
