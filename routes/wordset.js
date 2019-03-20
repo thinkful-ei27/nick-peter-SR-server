@@ -36,25 +36,44 @@ router.post('/', jwtAuth, (req, res, next) => {
       }
     return User.find({ _id: userId })
       .then(result => {
-        console.log('find by id result:');
-        console.log(result);
-        let wordSet = result[0].wordSet;
-        return wordSet;
-      }).then(wordSet => {
-        let newValue = wordSet[0].M;
-        if(answer === wordSet[0].English){
-          newValue = newValue + 1;
-          return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
+        //this is the current head index
+        let head = result[0].head;
+        //the head (word wise)
+        let word = result[0].wordSet[head];
+        //number that will indicate how many spaces the word will move (if correct)
+        let oldValue = word.memoryStrength;
+        //number that will be turned into the new head indicator
+        let next = result[0].wordSet[head].next;
+        if(answer === word.english){
+          let newValue = oldValue * 2;
+          return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
           .then(() => res.json('Correct!'));
-        } else {
-          newValue = newValue - 1;
-          if(newValue < 0){
-            newValue = 0;
-          }
-          let response = `Incorrect. The correct answer is ${wordSet[0].English}`;
-          return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
-          .then(() => res.json(response));
         }
+        //compare answer to head's answer/english value
+          //(True) new memoryStrength = oldValue * 2
+          //new head number equals old head's next
+          //using the head (number) as the index, find the word's next
+          //set head to that next value (index of new head)
+          //while loop (n<oldValue, next !== null) Traverse using temp node
+          //set tempNodes.next equal to answered word
+          //set answered word's next equal to original tempNodes.next
+        //
+
+
+        // if(answer === wordSet[0].English){
+        //   let oldValue = newValue;
+        //   newValue = newValue * 2;
+        //   return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
+        //   .then(() => res.json('Correct!'));
+        // } else {
+        //   newValue = newValue - 1;
+        //   if(newValue < 0){
+        //     newValue = 0;
+        //   }
+        //   let response = `Incorrect. The correct answer is ${wordSet[0].English}`;
+        //   return User.findOneAndUpdate({ _id: userId}, {$set: {"wordSet.0.M": newValue}})
+        //   .then(() => res.json(response));
+        // }
       }).catch(err => {
         next(err);
       })
