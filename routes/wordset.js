@@ -10,14 +10,27 @@ const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: tr
 
 router.get('/', jwtAuth, (req, res, next) => {
   let userId = req.user.id
-  return User.find({ _id: userId })
+  return User.find({ _id: userId }, { head: 1 })
   .then(result => {
-    let head = result[0].head;
-    console.log('Head is ', head);
-    let word = result[0].wordSet[head];
-    return word;
-  }).then(word => {
-    res.json(word.portuguese);
+  //   let head = result[0].head;
+  //   console.log('Head is ', head);
+  //   let word = result[0].wordSet[head];
+  //   return word;
+  // }).then(word => {
+  //   res.json(word.portuguese);
+  //   res.json(result[0].head);
+    let index = result[0].head;
+    let field = "wordSet." + index;
+    let options = {"_id": userId};
+    let projection = {};
+    projection[field] = 1;
+    //find?
+    return User.find(options)
+    .slice('wordSet', [index, 1])
+    .then(result => {
+      console.log(result[0].wordSet[0].portuguese);
+      res.json(result);
+    })
   })
   .catch(err => next(err));
 })
@@ -34,27 +47,29 @@ router.post('/', jwtAuth, (req, res, next) => {
             location: 'answer' //check with client
           });
       }
-    return User.find({ _id: userId })
+    return User.find({ _id: userId }, { head: 1 })
       .then(result => {
+        console.log(result);
+        res.json(result[0].head);
         //this is the current head index
-        let head = result[0].head;
-        //the head (word wise)
-        let word = result[0].wordSet[head];
-        //number that will indicate how many spaces the word will move (if correct)
-        let oldValue = word.memoryStrength;
-        //number that will be turned into the new head indicator
-        let next = result[0].wordSet[head].next;
-        //this will be the updated memoryStrength
-        let newValue;
-        if(answer === word.english){
-          newValue = oldValue * 2;
-          return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
-          .then(() => res.json('Correct!'));
-        } else {
-          newValue = 1;
-          return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
-          .then(() => res.json(`Incorrect. The correct answer is ${word.english}`));
-        }
+        // let head = result[0].head;
+        // //the head (word wise)
+        // let word = result[0].wordSet[head];
+        // //number that will indicate how many spaces the word will move (if correct)
+        // let oldValue = word.memoryStrength;
+        // //number that will be turned into the new head indicator
+        // let next = result[0].wordSet[head].next;
+        // //this will be the updated memoryStrength
+        // let newValue;
+        // if(answer === word.english){
+        //   newValue = oldValue * 2;
+        //   return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
+        //   .then(() => res.json(`Correct!`));
+        // } else {
+        //   newValue = 1;
+        //   return User.findOneAndUpdate({_id: userId}, {$set: {"head": next}})
+        //   .then(() => res.json(`Incorrect. The correct answer is ${word.english}`));
+        // }
         //compare answer to head's answer/english value
           //(True) new memoryStrength = oldValue * 2
           //new head number equals old head's next
