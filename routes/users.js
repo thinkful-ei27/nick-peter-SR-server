@@ -81,11 +81,11 @@ router.post('/', (req, res, next) => {
 
 
   //temporary, replace with call to MongoDB (list of words)
-  const wordSet = [{Portuguese: 'Ola', English: 'hello', M: 0},
- {Portuguese: 'Amor', English: 'love', M: 0},
-  {Portuguese: 'Felicidade', English: 'happiness', M: 0}, 
-  {Portuguese: 'Gato', English: 'cat', M:0}, 
-  {Portuguese: 'Sorrir', English: 'smile', M: 0}];
+  const wordSet = [{portuguese: 'Ola', english: 'hello', memoryStrength: 0, next: 1},
+ {portuguese: 'Amor', english: 'love', memoryStrength: 0, next: 2,},
+  {portuguese: 'Felicidade', english: 'happiness', memoryStrength: 0, next: 3}, 
+  {portuguese: 'Gato', english: 'cat', memoryStrength:0, next: 4}, 
+  {portuguese: 'Sorrir', english: 'smile', memoryStrength: 0, next: 5}];
 
   let { username, password } = req.body;
   return User.find({ username })

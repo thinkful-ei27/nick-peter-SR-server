@@ -12,10 +12,12 @@ router.get('/', jwtAuth, (req, res, next) => {
   let userId = req.user.id
   return User.find({ _id: userId })
   .then(result => {
-    let wordSet = result[0].wordSet;
-    return wordSet;
-  }).then(wordSet => {
-    res.json(wordSet[0].Portuguese);
+    let head = result[0].head;
+    console.log('Head is ', head);
+    let word = result[0].wordSet[head];
+    return word;
+  }).then(word => {
+    res.json(word.portuguese);
   })
   .catch(err => next(err));
 })
