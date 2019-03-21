@@ -55,12 +55,16 @@ router.post('/', jwtAuth, (req, res, next) => {
       const headNode = result.wordSet[oldHead];
       const trueAnswer = headNode.english;
       if(userAnswer === trueAnswer){
+        headNode.numberCorrect++;
         const mStrength = headNode.memoryStrength * 2;
         const newHead = headNode.next;
         let prevNode = newHead;
         let tempNode = newHead;
         for(let x = 0; x < mStrength; x++){
           //We will need a base case (tempNode === null?)
+          if (words[tempNode] === undefined) {
+            break;
+          }
           prevNode = tempNode;
           tempNode = words[tempNode].next;
           console.log(`prevNode is ${prevNode}`);
@@ -79,6 +83,7 @@ router.post('/', jwtAuth, (req, res, next) => {
             res.json('Correct!');
           });
       } else {
+        headNode.numberIncorrect++;
         words[oldHead].memoryStrength = 1;
         const newHead = headNode.next;
         const oldNext = words[newHead].next;

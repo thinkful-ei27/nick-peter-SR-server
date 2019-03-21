@@ -15,7 +15,9 @@ const schema = new mongoose.Schema({
     //Indicator of how well the user remembers the word, SRA
     memoryStrength: Number,
     //Index of the next number (mimics SLL)
-    next: Number
+    next: Number,
+    numberCorrect: {type: Number, default: 0},
+    numberIncorrect: {type: Number, default: 0}
   }],
   //This will be what get requests grab
   head: {
