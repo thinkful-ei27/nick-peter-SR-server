@@ -10,13 +10,20 @@ const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: tr
 
 router.get('/', jwtAuth, (req, res, next) => {
   let userId = req.user.id;
-  return User.find({ _id: userId }, { head: 1 })
+  return User.find({ _id: userId })
     .then(([result]) => {
-      const index = result.head;
-      const field = 'wordSet.' + index;
-      const options = {'_id': userId};
-      const projection = {};
-      projection[field] = 1;
+      const words = result.wordSet;
+      const currIdx = result.head;
+      const currWord = words[currIdx].portuguese;
+      const numCorrect = words[currIdx].numberCorrect;
+      const numIncorrect = words[currIdx].numberIncorrect;
+      const totalTimesGuessed = numCorrect + numIncorrect;
+      const percentCorrect = (numCorrect / totalTimesGuessed) * 100;
+      const percentIncorrect = (numIncorrect / totalTimesGuessed) * 100;
+
+      const progress = { numCorrect, numIncorrect, totalTimesGuessed, percentCorrect, percentIncorrect, currWord };
+
+      res.json(progress);
     })
     .catch(err => next(err));
 });
