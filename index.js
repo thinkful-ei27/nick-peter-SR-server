@@ -14,6 +14,7 @@ const jwtStrategy = require('./passport/jwt');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const wordRouter = require('./routes/wordset');
+const progressRouter = require('./routes/progress');
 
 
 const app = express();
@@ -47,6 +48,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: tr
 app.use('/api/users', usersRouter);
 app.use('/api', authRouter);
 app.use('/api/words', wordRouter);
+app.use('/api/progress', progressRouter);
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
