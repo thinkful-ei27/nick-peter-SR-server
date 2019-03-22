@@ -3,7 +3,7 @@
 const express = require('express');
 
 const User = require('../models/user');
-
+const baseSet = require('../db/words');
 const router = express.Router();
 
 /* ============ POST/CREATE AN ITEM ========== */
@@ -78,14 +78,8 @@ router.post('/', (req, res, next) => {
       location: tooSmallField || tooLargeField
     });
   }
-
-
-  //temporary, replace with call to MongoDB (list of words)
-  const wordSet = [{portuguese: 'Ola', english: 'hello', memoryStrength: 1, next: 1},
- {portuguese: 'Amor', english: 'love', memoryStrength: 1, next: 2,},
-  {portuguese: 'Felicidade', english: 'happiness', memoryStrength: 1, next: 3}, 
-  {portuguese: 'Gato', english: 'cat', memoryStrength: 1, next: 4}, 
-  {portuguese: 'Sorrir', english: 'smile', memoryStrength: 1, next: 5}];
+  
+  console.log(baseSet);
 
   let { username, password } = req.body;
   return User.find({ username })
@@ -106,7 +100,7 @@ router.post('/', (req, res, next) => {
       const newUser = {
         username,
         password: digest,
-        wordSet
+        wordSet: baseSet
       };
       return User.create(newUser);
     })
