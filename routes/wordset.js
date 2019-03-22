@@ -30,8 +30,7 @@ router.get('/', jwtAuth, (req, res, next) => {
 router.post('/', jwtAuth, (req, res, next) => {
   let userId = req.user.id;
   let { answer } = req.body;
-  let userAnswer = answer.toLowerCase();
-  if(!userAnswer){
+  if(!answer){
     return res.status(400).json({
       code: 400,
       reason: 'ValidationError',
@@ -39,6 +38,7 @@ router.post('/', jwtAuth, (req, res, next) => {
       location: 'answer' //check with client
     });
   }
+  let userAnswer = answer.toLowerCase();
   return User.find({ _id: userId })
     .then(([result]) => {
       //this is a number pointing to head's index
