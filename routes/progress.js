@@ -22,7 +22,6 @@ router.get('/', jwtAuth, (req, res, next) => {
       const percentIncorrect = (numIncorrect / totalTimesGuessed) * 100;
 
       const progress = { numCorrect, numIncorrect, totalTimesGuessed, percentCorrect, percentIncorrect, currWord };
-      console.log(progress);
       let data = JSON.stringify(progress);
       res.json(data);
     })

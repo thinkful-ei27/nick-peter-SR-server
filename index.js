@@ -30,7 +30,7 @@ app.use(
 app.use(
   cors({
     // quick and dirty need to fix
-    origin: '*'
+    origin: CLIENT_ORIGIN
   })
 );
 

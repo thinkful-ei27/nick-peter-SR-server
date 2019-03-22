@@ -12,13 +12,6 @@ router.get('/', jwtAuth, (req, res, next) => {
   let userId = req.user.id;
   return User.find({ _id: userId }, { head: 1 })
     .then(result => {
-      //   let head = result[0].head;
-      //   console.log('Head is ', head);
-      //   let word = result[0].wordSet[head];
-      //   return word;
-      // }).then(word => {
-      //   res.json(word.portuguese);
-      //   res.json(result[0].head);
       const index = result[0].head;
       const field = 'wordSet.' + index;
       const options = {'_id': userId};
@@ -67,13 +60,10 @@ router.post('/', jwtAuth, (req, res, next) => {
           }
           prevNode = tempNode;
           tempNode = words[tempNode].next;
-          console.log(`prevNode is ${prevNode}`);
-          console.log(`tempNode is ${tempNode}`);
         }
         words[prevNode].next = oldHead;
         words[oldHead].next = tempNode;
         words[oldHead].memoryStrength = mStrength;
-        console.log(words);
         //HOT SPICY MANGO POLICY
         const update = {};
         update['wordSet'] = words;
@@ -89,7 +79,6 @@ router.post('/', jwtAuth, (req, res, next) => {
         const oldNext = words[newHead].next;
         words[newHead].next = oldHead;
         words[oldHead].next = oldNext;
-        console.log(words[oldHead]);
         //HOT SPICY MANGO POLICY
         const update = {};
         update['wordSet'] = words;
