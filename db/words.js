@@ -1,5 +1,5 @@
   //temporary, replace with call to MongoDB (list of words)
-  const baseSet = [{portuguese: 'Ola', english: 'hello', memoryStrength: 1, next: 1},
+  const baseSet = [{portuguese: 'Olá', english: 'hello', memoryStrength: 1, next: 1},
  {portuguese: 'Amor', english: 'love', memoryStrength: 1, next: 2,},
   {portuguese: 'Felicidade', english: 'happiness', memoryStrength: 1, next: 3}, 
   {portuguese: 'Gato', english: 'cat', memoryStrength: 1, next: 4}, 
